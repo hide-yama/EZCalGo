@@ -7,5 +7,9 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
-  base: process.env.NODE_ENV === 'production' ? '/ezcalgo/' : '/',
+  base: process.env.GITHUB_ACTIONS 
+    ? '/EZCalGo/' 
+    : process.env.NODE_ENV === 'production' 
+      ? '/ezcalgo/' 
+      : '/',
 });
