@@ -10,6 +10,7 @@ function AppContent() {
   const [error, setError] = useState('');
   const [processingTime, setProcessingTime] = useState('');
   const [copySuccess, setCopySuccess] = useState(false);
+  const [copyInputSuccess, setCopyInputSuccess] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userAvatar, setUserAvatar] = useState<string | null>(null);
@@ -263,6 +264,7 @@ function AppContent() {
     setError('');
     setProcessingTime('');
     setCopySuccess(false);
+    setCopyInputSuccess(false);
     
     const now = new Date();
     const currentMinutes = now.getMinutes();
@@ -290,6 +292,18 @@ function AppContent() {
       await navigator.clipboard.writeText(output);
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
+    } catch (err) {
+      console.error('コピーに失敗しました: ', err);
+    }
+  };
+
+  const handleCopyInput = async () => {
+    if (!input) return;
+    
+    try {
+      await navigator.clipboard.writeText(input);
+      setCopyInputSuccess(true);
+      setTimeout(() => setCopyInputSuccess(false), 2000);
     } catch (err) {
       console.error('コピーに失敗しました: ', err);
     }
@@ -452,9 +466,24 @@ function AppContent() {
             </div>
 
             <div className="mb-8">
-              <label htmlFor="schedule-input" className="block text-sm font-medium text-gray-700 mb-2">
-                スケジュール入力:
-              </label>
+              <div className="flex justify-between items-center mb-2">
+                <label htmlFor="schedule-input" className="block text-sm font-medium text-gray-700">
+                  スケジュール入力:
+                </label>
+                <button
+                  onClick={handleCopyInput}
+                  disabled={!input}
+                  className="text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 text-sm"
+                >
+                  <Copy className="w-4 h-4" />
+                  コピー
+                  {copyInputSuccess && (
+                    <span className="text-emerald-600 transition-opacity animate-fade-in-out ml-1">
+                      ✓
+                    </span>
+                  )}
+                </button>
+              </div>
               <textarea
                 ref={textareaRef}
                 id="schedule-input"
