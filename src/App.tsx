@@ -309,6 +309,17 @@ function AppContent() {
     }
   };
 
+  const adjustTextareaHeight = () => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    textarea.style.height = 'auto';
+    textarea.style.height = `${Math.max(textarea.scrollHeight, 192)}px`;
+  };
+
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [input]);
+
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.metaKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
       e.preventDefault();
@@ -411,14 +422,14 @@ function AppContent() {
       </header>
 
       {error && (
-        <div className="max-w-3xl mx-auto px-4 mt-4">
+        <div className="max-w-6xl mx-auto px-4 mt-4">
           <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-md">
             <p className="text-red-700">{error}</p>
           </div>
         </div>
       )}
 
-      <main className="max-w-3xl mx-auto px-4 py-8">
+      <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           <div className="p-6">
             <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -465,7 +476,8 @@ function AppContent() {
               </div>
             </div>
 
-            <div className="mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="mb-8 md:mb-0">
               <div className="flex justify-between items-center mb-2">
                 <label htmlFor="schedule-input" className="block text-sm font-medium text-gray-700">
                   スケジュール入力:
@@ -490,7 +502,7 @@ function AppContent() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="w-full h-48 p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all duration-300 font-mono"
+                className="w-full min-h-[12rem] p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all duration-300 font-mono resize-none overflow-hidden"
                 placeholder="例:
 読書 30
 ストレッチ 15
@@ -558,6 +570,7 @@ function AppContent() {
               {processingTime && (
                 <p className="text-sm text-gray-500 mt-4 text-right">{processingTime}</p>
               )}
+            </div>
             </div>
           </div>
         </div>
