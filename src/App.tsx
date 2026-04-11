@@ -527,9 +527,24 @@ function AppContent() {
             </div>
 
             <div>
-              <label htmlFor="schedule-output" className="block text-sm font-medium text-gray-700 mb-2">
-                出力結果:
-              </label>
+              <div className="flex justify-between items-center mb-2">
+                <label htmlFor="schedule-output" className="block text-sm font-medium text-gray-700">
+                  出力結果:
+                </label>
+                <button
+                  onClick={handleCopy}
+                  disabled={!output}
+                  className="text-gray-500 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 text-sm"
+                >
+                  <Copy className="w-4 h-4" />
+                  コピー
+                  {copySuccess && (
+                    <span className="text-emerald-600 transition-opacity animate-fade-in-out ml-1">
+                      ✓
+                    </span>
+                  )}
+                </button>
+              </div>
               <div
                 id="schedule-output"
                 className="w-full min-h-[100px] p-4 bg-gray-50 border border-gray-200 rounded-xl font-mono whitespace-pre-wrap transition-all duration-300"
@@ -542,14 +557,6 @@ function AppContent() {
               )}
 
               <div className="mt-4 flex flex-wrap items-center gap-4">
-                <button
-                  onClick={handleCopy}
-                  disabled={!output}
-                  className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2.5 rounded-xl hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 shadow-md hover:shadow-lg flex items-center gap-2"
-                >
-                  <Copy className="w-4 h-4" />
-                  結果をコピー
-                </button>
                 {accessToken && (
                   <button
                     onClick={addToGoogleCalendar}
@@ -559,11 +566,6 @@ function AppContent() {
                     <Calendar className="w-4 h-4" />
                     {isAddingToCalendar ? '追加中...' : 'カレンダーに追加'}
                   </button>
-                )}
-                {copySuccess && (
-                  <span className="text-emerald-600 transition-opacity animate-fade-in-out">
-                    コピーしました！
-                  </span>
                 )}
               </div>
 
